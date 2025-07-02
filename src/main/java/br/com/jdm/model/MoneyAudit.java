@@ -8,5 +8,6 @@ public record MoneyAudit(
         BankService targetService,
         String description,
         OffsetDateTime createAt
+
 ) {
 }

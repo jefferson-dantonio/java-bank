@@ -3,20 +3,22 @@ package br.com.jdm.repository;
 import br.com.jdm.exceptions.AccountNotFoundException;
 import br.com.jdm.exceptions.PixInUseException;
 import br.com.jdm.model.AccountWallet;
-
+import java.util.ArrayList;
 import java.util.List;
-
 import static br.com.jdm.repository.CommonRepository.checkFundsForTransaction;
+
 
 public class AccountRepository {
 
-    private List<AccountWallet> accounts;
+    private final List<AccountWallet> accounts = new ArrayList<>();
 
     public AccountWallet create(final List<String> pix, final long initialFunds){
-        var pixInUse = accounts.stream().flatMap(a -> a.getPix().stream()).toList();
-        pix.forEach(p -> {
-            if (pixInUse.contains(p)) throw new PixInUseException("A chave pix " + p + " já está em uso.");
-        });
+        if(!accounts.isEmpty()) {
+            var pixInUse = accounts.stream().flatMap(a -> a.getPix().stream()).toList();
+            pix.forEach(p -> {
+                if (pixInUse.contains(p)) throw new PixInUseException("A chave pix " + p + " já está em uso.");
+            });
+        }
         var newAccount = new AccountWallet(initialFunds,pix);
         accounts.add(newAccount);
         return newAccount;
@@ -53,4 +55,6 @@ public class AccountRepository {
     public List<AccountWallet> list(){
         return this.accounts;
     }
+
+
 }

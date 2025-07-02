@@ -2,7 +2,6 @@ package br.com.jdm.model;
 
 
 import lombok.Getter;
-import lombok.ToString;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -10,7 +9,6 @@ import java.util.stream.Stream;
 
 import static br.com.jdm.model.BankService.INVESTMENT;
 
-@ToString
 @Getter
 public class InvestmentWallet extends Wallet{
     private final Investment investment;
@@ -29,5 +27,12 @@ public class InvestmentWallet extends Wallet{
         var history = new MoneyAudit(UUID.randomUUID(), getService(), "rendimento", OffsetDateTime.now());
         var money = Stream.generate(() -> new Money(history)).limit(amount).toList();
         this.money.addAll(money);
+    }
+
+    public String toString() {
+        return "InvestmentWallet{" +
+                ", account= pix:" + account.getPix() +
+                ", money= R$" + money.size() +
+                '}';
     }
 }

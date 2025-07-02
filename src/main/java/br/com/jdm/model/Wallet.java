@@ -3,7 +3,6 @@ package br.com.jdm.model;
 
 import lombok.Getter;
 import lombok.ToString;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;

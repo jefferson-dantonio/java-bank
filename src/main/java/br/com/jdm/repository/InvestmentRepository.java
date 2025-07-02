@@ -30,8 +30,12 @@ public class InvestmentRepository {
     }
 
     public InvestmentWallet initialInvestment(final AccountWallet account, final long id){
-        var accountsInUse = wallets.stream().map(InvestmentWallet::getAccount).toList();
-        if (accountsInUse.contains(account)) throw new AccountWithInvestmentException("A conta " + account +  " já possui um investimento ativo.");
+        if(!investments.isEmpty()) {
+
+            var accountsInUse = wallets.stream().map(InvestmentWallet::getAccount).toList();
+            if (accountsInUse.contains(account))
+                throw new AccountWithInvestmentException("A conta " + account + " já possui um investimento ativo.");
+        }
         var investment = findById(id);
         checkFundsForTransaction(account,investment.initialFunds());
         var wallet = new InvestmentWallet(investment, account, investment.initialFunds());
@@ -56,8 +60,8 @@ public class InvestmentRepository {
         return wallet;
     }
 
-    public void updateAmount(final long percent){
-        wallets.forEach(w -> w.updateAmount(percent));
+    public void updateAmount(){
+        wallets.forEach(w -> w.updateAmount(w.getInvestment().tax()));
     }
 
     public Investment findById(final long id) {
